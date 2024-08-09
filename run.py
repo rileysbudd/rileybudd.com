@@ -3,4 +3,5 @@ from app import app
 if __name__ == "__main__":
     app.run()
 
-#minor change
+if __name__ == "__main__":
+    app.run()
