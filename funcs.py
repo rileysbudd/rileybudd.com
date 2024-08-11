@@ -18,7 +18,7 @@ def generate_dumbquote():
         "The REAL Dalai Lama",
         "The Dalai Lama's stunt double",
         "Gandhi's secret twin",
-        "Gandhi's meditation coach",
+        "Gandhi's astrology coach",
         "Plato’s funky cousin",
         "Probably Einstein's barber",
         "The Pope's dope niece",
@@ -50,3 +50,23 @@ def generate_dumbquote():
     quote = completion.choices[0].message.content
 
     return quote, author
+
+def generate_icebreaker():
+    messages = [
+        {"role": "system", "content": "You are a genuinely curious person who is good at listening to people"},
+        {"role": "user", "content":
+            """Generate an open-ended question to be used as an icebreaker. \
+            The person who is asked the question should be likely to respond with a personal story. \
+            Return only whatever question you generate and don't include em dashes. \
+            Place it between quotation marks."""}
+    ]
+
+    completion = config.clients.openai.chat.completions.create(
+        model=openai_model,
+        messages=messages
+    )
+
+    icebreaker = completion.choices[0].message.content
+
+    return icebreaker
+

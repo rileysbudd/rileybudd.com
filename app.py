@@ -13,6 +13,11 @@ def dumbquote():
     quote, author = funcs.generate_dumbquote()
     return render_template('quote.html', quote=quote, author=author)
 
+@app.route('/icebreaker')
+def icebreaker():
+    icebreaker = funcs.generate_icebreaker()
+    return render_template('question.html', question=icebreaker)
+
 if __name__ == "__main__":
     app.run()
 
