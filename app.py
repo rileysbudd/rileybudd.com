@@ -6,5 +6,9 @@ app = Flask(__name__)
 def home():
     return render_template('quote.html')
 
+@app.route('/dumbquote')
+def dumbquote():
+    return render_template('quote.html')
+
 if __name__ == "__main__":
     app.run()
