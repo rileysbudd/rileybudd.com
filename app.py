@@ -21,7 +21,7 @@ def icebreaker():
     return render_template('question.html', question=icebreaker)
 
 #This needs some serious work
-@app.route('/<dir>/random_images')
+@app.route('/images/<dir>/random')
 def random_image(dir='examples'):
     if 'quantity' in request.args:
         quantity = int(request.args.get('quantity'))
