@@ -1,5 +1,6 @@
 from config import config
 import random
+import os
 
 openai_model = "gpt-3.5-turbo"
 
@@ -70,3 +71,17 @@ def generate_icebreaker():
 
     return icebreaker
 
+def list_image_files(directory):
+    image_files = []
+    for filename in os.listdir(directory):
+        if filename.endswith(".jpg") or filename.endswith(".png"):
+            image_files.append(os.path.join("./", directory, filename))
+    return image_files
+
+def random_images(images_dir = 'examples', quantity = 1, ):
+    set = list_image_files('static/images/' + images_dir)
+    random_set = random.sample(set, quantity)
+    random.shuffle(random_set)
+    return random_set
+
+# print(random_images('examples', quantity=2))
