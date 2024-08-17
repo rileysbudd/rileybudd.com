@@ -7,8 +7,8 @@ app = Flask(__name__)
 #This just serves content from the static folder
 @app.route('/static/<filepath>')
 def general(filepath):
-    # return current_app.send_static_file(filepath)
-    return filepath
+    return current_app.send_static_file(filepath)
+    # return filepath
 
 @app.route('/dumbquote')
 def dumbquote():
