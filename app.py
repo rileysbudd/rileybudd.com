@@ -1,14 +1,32 @@
 from flask import Flask, request, render_template, current_app
 from config import config
 import funcs
+from flask_wtf import FlaskForm
+from wtforms import StringField, SelectField
+from wtforms.validators import InputRequired
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secretkey'
+
+# https://www.geeksforgeeks.org/flask-wtf-explained-how-to-use-it/
+class MyForm(FlaskForm):
+    name = StringField('Name', validators=[InputRequired()])
+    country = SelectField('Country', choices=[('IN', 'India'), ('US', 'United States'), ('UK', 'United Kingdom')])
 
 #This just serves content from the static folder
 @app.route('/static/<filepath>')
 def general(filepath):
     return current_app.send_static_file(filepath)
     # return filepath
+
+@app.route('/test_form')
+def test_form():
+    form = MyForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        country = form.country.data
+        return f"Name: {name} < br > Country: {country}"
+    return render_template('form.html', form=form)
 
 @app.route('/dumbquote')
 def dumbquote():
