@@ -1,4 +1,5 @@
 flask
 gunicorn
 openai
-flask-WTF
+firebase_admin
+requests

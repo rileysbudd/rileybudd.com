@@ -3,3 +3,4 @@
 .env
 scratchpad.py
 /scratchdir/
+firebase_credentials.json

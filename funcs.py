@@ -2,7 +2,38 @@ from config import config
 import random
 import os
 
+import qrcode
+from qrcode.image.styledpil import StyledPilImage
+from qrcode.image.styles.moduledrawers import RoundedModuleDrawer
+from  qrcode.image.styles.colormasks import SolidFillColorMask
+# import PIL.ImageOps
+
+alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789'
+
 openai_model = "gpt-3.5-turbo"
+
+def random_choice():
+    return ''.join(random.choices(alphabet, k=8))
+
+def generate_codes(quantity=10):
+    for i in range(quantity):
+        qr = qrcode.QRCode(
+            version=1,
+            box_size=50,
+        )
+        shortcode = random_choice()
+        qr.add_data("https://youtu.be/dQw4w9WgXcQ?t=40")
+
+        img = qr.make_image(
+            # box_size=40,
+            image_factory=StyledPilImage,
+            module_drawer=RoundedModuleDrawer(),
+            eye_drawer=RoundedModuleDrawer(),
+            color_mask=SolidFillColorMask(back_color=(255, 255, 255, 0), front_color=(84, 84, 84, 255)),
+        )
+
+        # img = PIL.ImageOps.invert(img)
+        img.save("./scratchdir/{}.png".format(shortcode))
 
 def generate_dumbquote():
 
