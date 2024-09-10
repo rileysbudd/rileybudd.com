@@ -3,3 +3,4 @@ gunicorn
 openai
 firebase_admin
 requests
+qrcode

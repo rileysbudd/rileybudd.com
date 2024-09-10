@@ -2,7 +2,6 @@ from flask import Flask, request, render_template, current_app
 from config import config
 import funcs
 
-
 app = Flask(__name__)
 
 
@@ -74,6 +73,8 @@ def product_feed():
 
     # Render XML with Jinja2 template
     return render_template('google_shopping_feed.xml.j2', products=products, store=store), {'Content-Type': 'application/xml'}
+
+
 
 
 
