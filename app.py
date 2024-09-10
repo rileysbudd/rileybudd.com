@@ -11,6 +11,14 @@ def send_static_file(filepath):
     return current_app.send_static_file(filepath)
     # return filepath
 
+@app.route('/firestore/connected')
+def verify_firestore_connection():
+    testing_doc_001_ref = config.clients.firestore.collection("testing").document("001")
+    doc = testing_doc_001_ref.get()
+    if doc.exists:
+        return doc.get('confirmation')
+    else:
+        return "Oh no! You're disconnected."
 
 
 #This uses openai to generate a dumb quote that can be loaded through an iframe
