@@ -1,6 +1,8 @@
 from flask import Flask, request, render_template, current_app
 from config import config
 import funcs
+from classes import ShopifyIntegration
+
 
 app = Flask(__name__)
 
@@ -10,6 +12,7 @@ app = Flask(__name__)
 def send_static_file(filepath):
     return current_app.send_static_file(filepath)
     # return filepath
+
 
 @app.route('/firestore/connected')
 def verify_firestore_connection():
@@ -21,17 +24,39 @@ def verify_firestore_connection():
         return "Oh no! You're disconnected."
 
 
+@app.route('/bucket/<filepath>')
+def gcp_bucket(filepath):
+    blob = config.clients.bucket.blob(filepath)
+    if blob.exists():
+        return blob.download_as_bytes(), 200, {
+            'Content-Type': blob.content_type,
+            'Content-Disposition': 'inline'
+        }
+    else:
+        return 'Object not found', 404
+
+
 #This uses openai to generate a dumb quote that can be loaded through an iframe
 @app.route('/dumbquote')
 def dumbquote():
     quote, author = funcs.generate_dumbquote()
     return render_template('quote.html', quote=quote, author=author)
 
+
 #This uses openai to generate an icebreaker that can be loaded through an iframe
 @app.route('/icebreaker')
 def icebreaker():
     icebreaker = funcs.generate_icebreaker()
     return render_template('question.html', question=icebreaker)
+
+
+@app.route('/shopify_integrations/<myshopify_url>/products')
+def get_products(myshopify_url):
+    store = ShopifyIntegration(myshopify_url)
+    products = []
+    for doc in store.firestore_products_ref.stream():
+        products.append(doc.to_dict())
+    return 'hello world'
 
 
 @app.route('/google_shopping_feed.xml')
@@ -79,11 +104,9 @@ def product_feed():
         }
     ]
 
+
     # Render XML with Jinja2 template
-    return render_template('google_shopping_feed.xml.j2', products=products, store=store), {'Content-Type': 'application/xml'}
-
-
-
+    return render_template('google_shopping_feed.xml.j2', items=products, store=store), {'Content-Type': 'application/xml'}
 
 
 if __name__ == "__main__":

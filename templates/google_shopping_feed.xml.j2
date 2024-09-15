@@ -5,56 +5,54 @@
         <link>{{ store.url }}</link>
         <description>This is a product feed for Google Shopping PLA</description>
 
-        {% for product in products %}
+        {% for item in items %}
 
             <item>
 
                 <!-- Basic product data. Schema: https://support.google.com/merchants/answer/7052112?hl=en#basic_product_data -->
 
-                {% if product.variant_sku %}
-                    <g:id>{{ product.variant_sku }}</g:id>
-                {% elif product.main_sku %}
-                    <g:id>{{ product.main_sku }}</g:id>
+                {% if item.sku %}
+                    <g:id>{{ item.sku }}</g:id>
                 {% endif %}
 
-                {% if product.structured_title %}
+                {% if item.structured_title %}
                     <g:structured_title>
-                        <g:digital_source_type>{{ product.structured_title.digital_source_type }}</g:digital_source_type>
-                        <g:content>{{ product.structured_title.content }}</g:content>
+                        <g:digital_source_type>{{ item.structured_title.digital_source_type }}</g:digital_source_type>
+                        <g:content>{{ item.structured_title.content }}</g:content>
                     </g:structured_title>
-                {% elif product.title %}
-                    <g:title>{{ product.title }}</g:title>
+                {% elif item.title %}
+                    <g:title>{{ item.title }}</g:title>
                 {% endif %}
 
-                {% if product.structured_description %}
+                {% if item.structured_description %}
                     <g:structured_description>
-                        <g:digital_source_type>{{ product.structured_description.digital_source_type }}</g:digital_source_type>
-                        <g:content>{{ product.structured_description.content }}</g:content>
+                        <g:digital_source_type>{{ item.structured_description.digital_source_type }}</g:digital_source_type>
+                        <g:content>{{ item.structured_description.content }}</g:content>
                     </g:structured_description>
-                {% elif product.description %}
-                    <g:description>{{ product.description }}</g:description>
+                {% elif item.description %}
+                    <g:description>{{ item.description }}</g:description>
                 {% endif %}
 
-                {% if product.link %}
-                    <g:link>{{ product.link }}</g:link>
+                {% if item.link %}
+                    <g:link>{{ item.link }}</g:link>
                 {% endif %}
 
-                {% if product.image_link %}
-                    <g:image_link>{{ product.image_link }}</g:image_link>
+                {% if item.image_link %}
+                    <g:image_link>{{ item.image_link }}</g:image_link>
                 {% endif %}
 
-                {% if product.additional_image_links %}
-                    {% for link in product.additional_image_links %}
+                {% if item.additional_image_links %}
+                    {% for link in item.additional_image_links %}
                         <g:additional_image_link>{{ link }}</g:additional_image_link>
                     {% endfor %}
                 {% endif %}
 
-                {% if product.virtual_model_link %}
-                    <g:virtual_model_link>{{ product.virtual_model_link }}<g:virtual_model_link>
+                {% if item.virtual_model_link %}
+                    <g:virtual_model_link>{{ item.virtual_model_link }}<g:virtual_model_link>
                 {% endif %}
 
-                {% if product.mobile_link %}
-                    <g:mobile_link>{{ product.mobile_link }}<g:mobile_link>
+                {% if item.mobile_link %}
+                    <g:mobile_link>{{ item.mobile_link }}<g:mobile_link>
                 {% endif %}
 
                 <!-- End basic product data -->
@@ -62,96 +60,96 @@
 
                 <!-- Price and Availability. Schema: https://support.google.com/merchants/answer/7052112?hl=en#price_and_availability -->
 
-                {% if product.availability %}
-                    <g:availability>{{ product.availability }}</g:availability>
+                {% if item.availability %}
+                    <g:availability>{{ item.availability }}</g:availability>
                 {% endif %}
 
-                {% if product.availability_date %}
-                    <g:availability_date>{{ product.availability_date }}</g:availability_date>
+                {% if item.availability_date %}
+                    <g:availability_date>{{ item.availability_date }}</g:availability_date>
                 {% endif %}
 
-                {% if product.cost_of_goods_sold %}
-                    <g:cost_of_goods_sold>{{ product.cost_of_goods_sold }}</g:cost_of_goods_sold>
+                {% if item.cost_of_goods_sold %}
+                    <g:cost_of_goods_sold>{{ item.cost_of_goods_sold }}</g:cost_of_goods_sold>
                 {% endif %}
 
-                {% if product.expiration_date %}
-                    <g:expiration_date>{{ product.expiration_date }}</g:expiration_date>
+                {% if item.expiration_date %}
+                    <g:expiration_date>{{ item.expiration_date }}</g:expiration_date>
                 {% endif %}
 
-                {% if product.price %}
-                    <g:price>{{ product.price }}</g:price>
+                {% if item.price %}
+                    <g:price>{{ item.price }}</g:price>
                 {% endif %}
 
-                {% if product.sale_price %}
-                    <g:sale_price>{{ product.sale_price }}</g:sale_price>
+                {% if item.sale_price %}
+                    <g:sale_price>{{ item.sale_price }}</g:sale_price>
                 {% endif %}
 
-                {% if product.sale_price_effective_date %}
-                    <g:sale_price_effective_date>{{ product.sale_price_effective_date }}</g:sale_price_effective_date>
+                {% if item.sale_price_effective_date %}
+                    <g:sale_price_effective_date>{{ item.sale_price_effective_date }}</g:sale_price_effective_date>
                 {% endif %}
 
-                {% if product.unit_pricing_measure %}
-                    <g:unit_pricing_measure>{{ product.unit_pricing_measure }}</g:unit_pricing_measure>
+                {% if item.unit_pricing_measure %}
+                    <g:unit_pricing_measure>{{ item.unit_pricing_measure }}</g:unit_pricing_measure>
                 {% endif %}
 
-                {% if product.unit_pricing_base_measure %}
-                    <g:unit_pricing_base_measure>{{ product.unit_pricing_base_measure }}</g:unit_pricing_base_measure>
+                {% if item.unit_pricing_base_measure %}
+                    <g:unit_pricing_base_measure>{{ item.unit_pricing_base_measure }}</g:unit_pricing_base_measure>
                 {% endif %}
 
-                {% if product.installment %}
+                {% if item.installment %}
                     <g:installment>
 
-                        {% if product.installment.months %}
-                            <g:months>{{ product.installment.months }}</g:months>
+                        {% if item.installment.months %}
+                            <g:months>{{ item.installment.months }}</g:months>
                         {% endif %}
 
-                        {% if product.installment.amount %}
-                            <g:amount>{{ product.installment.amount }}</g:amount>
+                        {% if item.installment.amount %}
+                            <g:amount>{{ item.installment.amount }}</g:amount>
                         {% endif %}
 
-                        {% if product.installment.downpayment %}
-                            <g:downpayment>{{ product.installment.downpayment }}</g:downpayment>
+                        {% if item.installment.downpayment %}
+                            <g:downpayment>{{ item.installment.downpayment }}</g:downpayment>
                         {% endif %}
 
-                        {% if product.installment.credit_type %}
-                            <g:credit_type>{{ product.installment.credit_type }}</g:credit_type>
+                        {% if item.installment.credit_type %}
+                            <g:credit_type>{{ item.installment.credit_type }}</g:credit_type>
                         {% endif %}
 
                     </g:installment>
                 {% endif %}
 
-                {% if product.subscription_cost %}
-                    <g:subscription_cost>{{ product.subscription_cost }}</g:subscription_cost>
+                {% if item.subscription_cost %}
+                    <g:subscription_cost>{{ item.subscription_cost }}</g:subscription_cost>
                 {% endif %}
 
-                {% if product.loyalty_program %}
+                {% if item.loyalty_program %}
                     <g:loyalty_program>
 
-                        {% if product.loyalty_program.program_label %}
-                            <g:program_label>{{ product.loyalty_program.program_label }}</g:program_label>
+                        {% if item.loyalty_program.program_label %}
+                            <g:program_label>{{ item.loyalty_program.program_label }}</g:program_label>
                         {% endif %}
 
-                        {% if product.loyalty_program.tier_label %}
-                            <g:tier_label>{{ product.loyalty_program.tier_label }}</g:tier_label>
+                        {% if item.loyalty_program.tier_label %}
+                            <g:tier_label>{{ item.loyalty_program.tier_label }}</g:tier_label>
                         {% endif %}
 
-                        {% if product.loyalty_program.price %}
-                            <g:price>{{ product.loyalty_program.price }}</g:price>
+                        {% if item.loyalty_program.price %}
+                            <g:price>{{ item.loyalty_program.price }}</g:price>
                         {% endif %}
 
-                        {% if product.loyalty_program.loyalty_points %}
-                            <g:loyalty_points>{{ product.loyalty_program.loyalty_points }}</g:loyalty_points>
+                        {% if item.loyalty_program.loyalty_points %}
+                            <g:loyalty_points>{{ item.loyalty_program.loyalty_points }}</g:loyalty_points>
                         {% endif %}
 
-                        {% if product.loyalty_program.member_price_effective_date %}
-                            <g:member_price_effective_date>{{ product.loyalty_program.member_price_effective_date }}</g:member_price_effective_date>
+                        {% if item.loyalty_program.member_price_effective_date %}
+                            <g:member_price_effective_date>{{ item.loyalty_program.member_price_effective_date }}</g:member_price_effective_date>
                         {% endif %}
 
                     </g:loyalty_program>
                 {% endif %}
 
-                {% if product.auto_pricing_min_price %}
-                    <g:auto_pricing_min_price>{{ product.auto_pricing_min_price }}</g:auto_pricing_min_price>
+                {% if item.auto_pricing_min_price %}
+                    <g:auto_pricing_min_price>{{ item.auto_pricing_min_price }}</g:auto_pricing_min_price>
                 {% endif %}
 
                 <!-- End price and availability -->
@@ -159,12 +157,12 @@
 
                 <!-- Product category. Schema: https://support.google.com/merchants/answer/7052112?hl=en#product_category -->
 
-                {% if product.google_product_category %}
-                    <g:google_product_category>{{ product.google_product_category }}</g:google_product_category>
+                {% if item.google_product_category %}
+                    <g:google_product_category>{{ item.google_product_category }}</g:google_product_category>
                 {% endif %}
 
-                {% if product.product_type %}
-                    <g:product_type>{{ product.product_type }}</g:product_type>
+                {% if item.product_type %}
+                    <g:product_type>{{ item.product_type }}</g:product_type>
                 {% endif %}
 
                 <!-- End product category -->
@@ -172,20 +170,20 @@
 
                 <!-- Product identifiers. Schema: https://support.google.com/merchants/answer/7052112?hl=en#product_identifiers -->
 
-                {% if product.brand %}
-                    <g:brand>{{ product.brand }}</g:brand>
+                {% if item.brand %}
+                    <g:brand>{{ item.brand }}</g:brand>
                 {% endif %}
 
-                {% if product.gtin %}
-                    <g:gtin>{{ product.gtin }}</g:gtin>
+                {% if item.gtin %}
+                    <g:gtin>{{ item.gtin }}</g:gtin>
                 {% endif %}
 
-                {% if product.mpn %}
-                    <g:mpn>{{ product.mpn }}</g:mpn>
+                {% if item.mpn %}
+                    <g:mpn>{{ item.mpn }}</g:mpn>
                 {% endif %}
 
-                {% if product.identifier_exists %}
-                    <g:identifier_exists>{{ product.identifier_exists }}</g:identifier_exists>
+                {% if item.identifier_exists %}
+                    <g:identifier_exists>{{ item.identifier_exists }}</g:identifier_exists>
                 {% endif %}
 
                 <!-- End product identifiers -->
@@ -193,124 +191,124 @@
 
                 <!-- Detailed product description. Schema: https://support.google.com/merchants/answer/7052112?hl=en#detailed_product_description -->
 
-                {% if product.condition %}
-                    <g:condition>{{ product.condition }}</g:condition>
+                {% if item.condition %}
+                    <g:condition>{{ item.condition }}</g:condition>
                 {% endif %}
 
-                {% if product.adult %}
-                    <g:adult>{{ product.adult }}</g:adult>
+                {% if item.adult %}
+                    <g:adult>{{ item.adult }}</g:adult>
                 {% endif %}
 
-                {% if product.multipack %}
-                    <g:multipack>{{ product.multipack }}</g:multipack>
+                {% if item.multipack %}
+                    <g:multipack>{{ item.multipack }}</g:multipack>
                 {% endif %}
 
-                {% if product.is_bundle %}
-                    <g:is_bundle>{{ product.is_bundle }}</g:is_bundle>
+                {% if item.is_bundle %}
+                    <g:is_bundle>{{ item.is_bundle }}</g:is_bundle>
                 {% endif %}
 
-                {% if product.certification %}
+                {% if item.certification %}
                     <g:certification>
 
-                        {% if product.certification.certification_authority %}
-                            <g:certification_authority>{{ product.certification.certification_authority }}</g:certification_authority>
+                        {% if item.certification.certification_authority %}
+                            <g:certification_authority>{{ item.certification.certification_authority }}</g:certification_authority>
                         {% endif %}
 
-                        {% if product.certification.certification_name %}
-                            <g:certification_name>{{ product.certification.certification_name }}</g:certification_name>
+                        {% if item.certification.certification_name %}
+                            <g:certification_name>{{ item.certification.certification_name }}</g:certification_name>
                         {% endif %}
 
-                        {% if product.certification.certification_code %}
-                            <g:certification_code>{{ product.certification.certification_code }}</g:certification_code>
+                        {% if item.certification.certification_code %}
+                            <g:certification_code>{{ item.certification.certification_code }}</g:certification_code>
                         {% endif %}
 
                     </g:certification>
                 {% endif %}
 
-                {% if product.energy_efficiency_class %}
-                    <g:energy_efficiency_class>{{ product.energy_efficiency_class }}</g:energy_efficiency_class>
+                {% if item.energy_efficiency_class %}
+                    <g:energy_efficiency_class>{{ item.energy_efficiency_class }}</g:energy_efficiency_class>
                 {% endif %}
 
-                {% if product.min_energy_efficiency_class %}
-                    <g:min_energy_efficiency_class>{{ product.min_energy_efficiency_class }}</g:min_energy_efficiency_class>
+                {% if item.min_energy_efficiency_class %}
+                    <g:min_energy_efficiency_class>{{ item.min_energy_efficiency_class }}</g:min_energy_efficiency_class>
                 {% endif %}
 
-                {% if product.max_energy_efficiency %}
-                    <g:max_energy_efficiency>{{ product.max_energy_efficiency }}</g:max_energy_efficiency>
+                {% if item.max_energy_efficiency %}
+                    <g:max_energy_efficiency>{{ item.max_energy_efficiency }}</g:max_energy_efficiency>
                 {% endif %}
 
-                {% if product.age_group %}
-                    <g:age_group>{{ product.age_group }}</g:age_group>
+                {% if item.age_group %}
+                    <g:age_group>{{ item.age_group }}</g:age_group>
                 {% endif %}
 
-                {% if product.color %}
-                    <g:color>{{ product.color }}</g:color>
+                {% if item.color %}
+                    <g:color>{{ item.color }}</g:color>
                 {% endif %}
 
-                {% if product.gender %}
-                    <g:gender>{{ product.gender }}</g:gender>
+                {% if item.gender %}
+                    <g:gender>{{ item.gender }}</g:gender>
                 {% endif %}
 
-                {% if product.material %}
-                    <g:material>{{ product.material }}</g:material>
+                {% if item.material %}
+                    <g:material>{{ item.material }}</g:material>
                 {% endif %}
 
-                {% if product.pattern %}
-                    <g:pattern>{{ product.pattern }}</g:pattern>
+                {% if item.pattern %}
+                    <g:pattern>{{ item.pattern }}</g:pattern>
                 {% endif %}
 
-                {% if product.size %}
-                    <g:size>{{ product.size }}</g:size>
+                {% if item.size %}
+                    <g:size>{{ item.size }}</g:size>
                 {% endif %}
 
-                {% if product.size_type %}
-                    <g:size_type>{{ product.size_type }}</g:size_type>
+                {% if item.size_type %}
+                    <g:size_type>{{ item.size_type }}</g:size_type>
                 {% endif %}
 
-                {% if product.size_system %}
-                    <g:size_system>{{ product.size_system }}</g:size_system>
+                {% if item.size_system %}
+                    <g:size_system>{{ item.size_system }}</g:size_system>
                 {% endif %}
 
-                {% if product.variant_sku %}
-                    <g:item_group_id>{{ product.main_sku }}</g:item_group_id>
+                {% if item.group_id %}
+                    <g:item_group_id>{{ item.group_id }}</g:item_group_id>
                 {% endif %}
 
-                {% if product.length %}
-                    <g:product_length>{{ product.length }}</g:product_length>
+                {% if item.length %}
+                    <g:product_length>{{ item.length }}</g:product_length>
                 {% endif %}
 
-                {% if product.width %}
-                    <g:product_width>{{ product.width }}</g:product_width>
+                {% if item.width %}
+                    <g:product_width>{{ item.width }}</g:product_width>
                 {% endif %}
 
-                {% if product.height %}
-                    <g:product_height>{{ product.height }}</g:product_height>
+                {% if item.height %}
+                    <g:product_height>{{ item.height }}</g:product_height>
                 {% endif %}
 
-                {% if product.weight %}
-                    <g:product_weight>{{ product.weight }}</g:product_weight>
+                {% if item.weight %}
+                    <g:product_weight>{{ item.weight }}</g:product_weight>
                 {% endif %}
 
-                {% if product.additional_product_detail %}
+                {% if item.additional_product_detail %}
                     <g:product_detail>
 
-                        {% if product.additional_product_detail.section_name %}
-                            <g:section_name>{{ product.additional_product_detail.section_name }}</g:section_name>
+                        {% if item.additional_product_detail.section_name %}
+                            <g:section_name>{{ item.additional_product_detail.section_name }}</g:section_name>
                         {% endif %}
 
-                        {% if product.additional_product_detail.attribute_name %}
-                            <g:attribute_name>{{ product.additional_product_detail.attribute_name }}</g:attribute_name>
+                        {% if item.additional_product_detail.attribute_name %}
+                            <g:attribute_name>{{ item.additional_product_detail.attribute_name }}</g:attribute_name>
                         {% endif %}
 
-                        {% if product.additional_product_detail.attribute_value %}
-                            <g:attribute_value>{{ product.additional_product_detail.attribute_value }}</g:attribute_value>
+                        {% if item.additional_product_detail.attribute_value %}
+                            <g:attribute_value>{{ item.additional_product_detail.attribute_value }}</g:attribute_value>
                         {% endif %}
 
                     </g:product_detail>
                 {% endif %}
 
-                {% if product.highlights %}
-                    {% for highlight in product.highlights %}
+                {% if item.highlights %}
+                    {% for highlight in item.highlights %}
                         <g:product_highlight>{{ highlight }}</g:product_highlight>
                     {% endfor %}
                 {% endif %}
@@ -320,38 +318,38 @@
 
                 <!-- Shopping campaigns and other configurations. Schema: https://support.google.com/merchants/answer/7052112?hl=en#shopping_campaigns_and_other -->
 
-                {% if product.google_ads_redirect %}
-                    <g:ads_redirect>{{ product.google_ads_redirect }}</g:ads_redirect>
+                {% if item.google_ads_redirect %}
+                    <g:ads_redirect>{{ item.google_ads_redirect }}</g:ads_redirect>
                 {% endif %}
 
-                {% if product.custom_label_0 %}
-                    <g:custom_label_0>{{ product.custom_label_0 }}</g:custom_label_0>
+                {% if item.custom_label_0 %}
+                    <g:custom_label_0>{{ item.custom_label_0 }}</g:custom_label_0>
                 {% endif %}
 
-                {% if product.custom_label_1 %}
-                    <g:custom_label_1>{{ product.custom_label_1 }}</g:custom_label_1>
+                {% if item.custom_label_1 %}
+                    <g:custom_label_1>{{ item.custom_label_1 }}</g:custom_label_1>
                 {% endif %}
 
-                {% if product.custom_label_2 %}
-                    <g:custom_label_2>{{ product.custom_label_2 }}</g:custom_label_2>
+                {% if item.custom_label_2 %}
+                    <g:custom_label_2>{{ item.custom_label_2 }}</g:custom_label_2>
                 {% endif %}
 
-                {% if product.custom_label_3 %}
-                    <g:custom_label_3>{{ product.custom_label_3 }}</g:custom_label_3>
+                {% if item.custom_label_3 %}
+                    <g:custom_label_3>{{ item.custom_label_3 }}</g:custom_label_3>
                 {% endif %}
 
-                {% if product.custom_label_4 %}
-                    <g:custom_label_4>{{ product.custom_label_4 }}</g:custom_label_4>
+                {% if item.custom_label_4 %}
+                    <g:custom_label_4>{{ item.custom_label_4 }}</g:custom_label_4>
                 {% endif %}
 
-                {% if product.promotion_ids %}
-                    {% for id in product.promotion_ids %}
+                {% if item.promotion_ids %}
+                    {% for id in item.promotion_ids %}
                         <g:promotion_id>{{ id }}</g:promotion_id>
                     {% endfor %}
                 {% endif %}
 
-                {% if product.lifestyle_image_link %}
-                    <g:lifestyle_image_link>{{ product.lifestyle_image_link }}</g:lifestyle_image_link>
+                {% if item.lifestyle_image_link %}
+                    <g:lifestyle_image_link>{{ item.lifestyle_image_link }}</g:lifestyle_image_link>
                 {% endif %}
 
                 <!-- End shopping campaigns and other configurations -->
@@ -359,8 +357,8 @@
 
                 <!-- Marketplaces. Schema: https://support.google.com/merchants/answer/7052112?hl=en#marketplaces -->
 
-                {% if product.external_seller_id %}
-                    <g:external_seller_id>{{ product.external_seller_id }}</g:external_seller_id>
+                {% if item.external_seller_id %}
+                    <g:external_seller_id>{{ item.external_seller_id }}</g:external_seller_id>
                 {% endif %}
 
                 <!-- End marketplaces -->
@@ -368,25 +366,25 @@
 
                 <!-- Destinations. Schema: https://support.google.com/merchants/answer/7052112?hl=en#destinations -->
 
-                {% if product.excluded_destinations %}
-                    {% for destination in excluded_destinations %}
+                {% if item.excluded_destinations %}
+                    {% for destination in item.excluded_destinations %}
                         <g:excluded_destination>{{ destination }}</g:excluded_destination>
                     {% endfor %}
                 {% endif %}
 
-                {% if product.included_destinations %}
-                    {% for destination in included_destinations %}
+                {% if item.included_destinations %}
+                    {% for destination in item.included_destinations %}
                         <g:included_destination>{{ destination }}</g:included_destination>
                     {% endfor %}
                 {% endif %}
 
-                {% if product.excluded_countries %}
-                    {% for country in excluded_countries %}
+                {% if item.excluded_countries %}
+                    {% for country in item.excluded_countries %}
                         <g:shopping_ads_excluded_country>{{ country }}</g:shopping_ads_excluded_country>
                     {% endfor %}
                 {% endif %}
 
-                {% if product.pause %}
+                {% if item.pause %}
                     <g:pause>ads</g:pause>
                 {% endif %}
 
@@ -395,92 +393,92 @@
 
                 <!-- Shipping. Schema: https://support.google.com/merchants/answer/7052112?hl=en#shipping_and_returns -->
 
-                {% if product.shipping %}
+                {% if item.shipping %}
                     <g:shipping>
 
-                        {% if product.shipping.country %}
-                            <g:country>{{ product.shipping.country }}</g:country>
+                        {% if item.shipping.country %}
+                            <g:country>{{ item.shipping.country }}</g:country>
                         {% endif %}
 
-                        {% if product.shipping.region %}
-                            <g:region>{{ product.shipping.region }}</g:region>
+                        {% if item.shipping.region %}
+                            <g:region>{{ item.shipping.region }}</g:region>
                         {% endif %}
 
-                        {% if product.shipping.postal_code %}
-                            <g:postal_code>{{ product.shipping.postal_code }}</g:postal_code>
+                        {% if item.shipping.postal_code %}
+                            <g:postal_code>{{ item.shipping.postal_code }}</g:postal_code>
                         {% endif %}
 
-                        {% if product.shipping.location_id %}
-                            <g:location_id>{{ product.shipping.location_id }}</g:location_id>
+                        {% if item.shipping.location_id %}
+                            <g:location_id>{{ item.shipping.location_id }}</g:location_id>
                         {% endif %}
 
-                        {% if product.shipping.location_group_name %}
-                            <g:location_group_name>{{ product.shipping.location_group_name }}</g:location_group_name>
+                        {% if item.shipping.location_group_name %}
+                            <g:location_group_name>{{ item.shipping.location_group_name }}</g:location_group_name>
                         {% endif %}
 
-                        {% if product.shipping.service %}
-                            <g:service>{{ product.shipping.service }}</g:service>
+                        {% if item.shipping.service %}
+                            <g:service>{{ item.shipping.service }}</g:service>
                         {% endif %}
 
-                        {% if product.shipping.price %}
-                            <g:price>{{ product.shipping.price }}</g:price>
+                        {% if item.shipping.price %}
+                            <g:price>{{ item.shipping.price }}</g:price>
                         {% endif %}
 
-                        {% if product.shipping.min_handling_time %}
-                            <g:min_handling_time>{{ product.shipping.min_handling_time }}</g:min_handling_time>
+                        {% if item.shipping.min_handling_time %}
+                            <g:min_handling_time>{{ item.shipping.min_handling_time }}</g:min_handling_time>
                         {% endif %}
 
-                        {% if product.shipping.max_handling_time %}
-                            <g:max_handling_time>{{ product.shipping.max_handling_time }}</g:max_handling_time>
+                        {% if item.shipping.max_handling_time %}
+                            <g:max_handling_time>{{ item.shipping.max_handling_time }}</g:max_handling_time>
                         {% endif %}
 
-                        {% if product.shipping.min_transit_time %}
-                            <g:min_transit_time>{{ product.shipping.min_transit_time }}</g:min_transit_time>
+                        {% if item.shipping.min_transit_time %}
+                            <g:min_transit_time>{{ item.shipping.min_transit_time }}</g:min_transit_time>
                         {% endif %}
 
-                        {% if product.shipping.max_transit_time %}
-                            <g:max_transit_time>{{ product.shipping.max_transit_time }}</g:max_transit_time>
+                        {% if item.shipping.max_transit_time %}
+                            <g:max_transit_time>{{ item.shipping.max_transit_time }}</g:max_transit_time>
                         {% endif %}
 
                     </g:shipping>
                 {% endif %}
 
-                {% if product.shipping_label %}
-                    <g:shipping_label>{{ product.shipping_label }}</g:shipping_label>
+                {% if item.shipping_label %}
+                    <g:shipping_label>{{ item.shipping_label }}</g:shipping_label>
                 {% endif %}
 
-                {% if product.shipping_weight %}
-                    <g:shipping_weight>{{ product.shipping_weight }}</g:shipping_weight>
+                {% if item.shipping_weight %}
+                    <g:shipping_weight>{{ item.shipping_weight }}</g:shipping_weight>
                 {% endif %}
 
-                {% if product.shipping_length %}
-                    <g:shipping_length>{{ product.shipping_length }}</g:shipping_length>
+                {% if item.shipping_length %}
+                    <g:shipping_length>{{ item.shipping_length }}</g:shipping_length>
                 {% endif %}
 
-                {% if product.shipping_width %}
-                    <g:shipping_width>{{ product.shipping_width }}</g:shipping_width>
+                {% if item.shipping_width %}
+                    <g:shipping_width>{{ item.shipping_width }}</g:shipping_width>
                 {% endif %}
 
-                {% if product.shipping_height %}
-                    <g:shipping_height>{{ product.shipping_height }}</g:shipping_height>
+                {% if item.shipping_height %}
+                    <g:shipping_height>{{ item.shipping_height }}</g:shipping_height>
                 {% endif %}
 
-                {% if product.ships_from_country %}
-                    <g:ships_from_country>{{ product.ships_from_country }}</g:ships_from_country>
+                {% if item.ships_from_country %}
+                    <g:ships_from_country>{{ item.ships_from_country }}</g:ships_from_country>
                 {% endif %}
 
-                {% if product.max_handling_time %}
-                    <g:max_handling_time>{{ product.max_handling_time }}</g:max_handling_time>
+                {% if item.max_handling_time %}
+                    <g:max_handling_time>{{ item.max_handling_time }}</g:max_handling_time>
                 {% endif %}
 
-                {% if product.min_handling_time %}
-                    <g:min_handling_time>{{ product.min_handling_time }}</g:min_handling_time>
+                {% if item.min_handling_time %}
+                    <g:min_handling_time>{{ item.min_handling_time }}</g:min_handling_time>
                 {% endif %}
 
-                {% if product.free_shipping_threshold %}
+                {% if item.free_shipping_threshold %}
                     <g:free_shipping_threshold>
-                        <g:country>{{ product.free_shipping_threshold.country }}</g:country>
-                        <g:price_threshold>{{ product.free_shipping_threshold.price_threshold }}</g:price_threshold>
+                        <g:country>{{ item.free_shipping_threshold.country }}</g:country>
+                        <g:price_threshold>{{ item.free_shipping_threshold.price_threshold }}</g:price_threshold>
                     </g:free_shipping_threshold>
                 {% endif %}
 
@@ -489,38 +487,38 @@
 
                 <!-- Tax override. Schema: https://support.google.com/merchants/answer/7052112?hl=en#tax -->
 
-                {% if product.tax %}
+                {% if item.tax %}
                     <g:tax>
 
-                        {% if product.tax.country %}
-                            <g:country>{{ product.tax.country }}</g:country>
+                        {% if item.tax.country %}
+                            <g:country>{{ item.tax.country }}</g:country>
                         {% endif %}
 
-                        {% if product.tax.region %}
-                            <g:region>{{ product.tax.region }}</g:region>
+                        {% if item.tax.region %}
+                            <g:region>{{ item.tax.region }}</g:region>
                         {% endif %}
 
-                        {% if product.tax.postal_code %}
-                            <g:postal_code>{{ product.tax.postal_code }}</g:postal_code>
+                        {% if item.tax.postal_code %}
+                            <g:postal_code>{{ item.tax.postal_code }}</g:postal_code>
                         {% endif %}
 
-                        {% if product.tax.location_id %}
-                            <g:location_id>{{ product.tax.location_id }}</g:location_id>
+                        {% if item.tax.location_id %}
+                            <g:location_id>{{ item.tax.location_id }}</g:location_id>
                         {% endif %}
 
-                        {% if product.tax.rate %}
-                            <g:rate>{{ product.tax.rate }}</g:rate>
+                        {% if item.tax.rate %}
+                            <g:rate>{{ item.tax.rate }}</g:rate>
                         {% endif %}
 
-                        {% if product.tax.tax_ship %}
-                            <g:tax_ship>{{ product.tax.tax_ship }}</g:tax_ship>
+                        {% if item.tax.tax_ship %}
+                            <g:tax_ship>{{ item.tax.tax_ship }}</g:tax_ship>
                         {% endif %}
 
                     </g:tax>
                 {% endif %}
 
-                {% if product.tax_category %}
-                    <g:tax_category>{{ product.tax_category }}</g:tax_category>
+                {% if item.tax_category %}
+                    <g:tax_category>{{ item.tax_category }}</g:tax_category>
                 {% endif %}
 
                 <!-- End tax override -->

@@ -3,6 +3,7 @@ from types import SimpleNamespace
 from openai import OpenAI
 from firebase_admin import initialize_app, firestore, credentials
 # from google.cloud.storage import *
+from firebase_admin import storage
 
 if os.environ.get('ON_GOOGLE_CLOUD_RUN') == 'true':
     print('On Google Cloud Run')
@@ -27,6 +28,7 @@ initialize_app(firestore_creds)
 clients = SimpleNamespace(**{
     'openai': OpenAI(),
     'firestore': firestore.client(),
+    'bucket': storage.bucket(name='stone-fortress-432016-e3.appspot.com')
 })
 
 
@@ -38,3 +40,5 @@ config = SimpleNamespace(**{
 
 if __name__ == "__main__":
     print(config)
+
+
