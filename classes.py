@@ -10,10 +10,11 @@ shopify_integrations_collection_id = 'shopify_integrations'
 
 
 class ShopifyIntegration:
-    def __init__(self, myshopify_domain):
-        self.myshopify_domain = myshopify_domain
+    def __init__(self, store_id):
+        self.store_id = store_id
+        self.myshopify_domain = self.store_id + '.myshopify.com'
 
-        self.firestore_doc_ref = db.collection(shopify_integrations_collection_id).document(self.myshopify_domain)
+        self.firestore_doc_ref = db.collection(shopify_integrations_collection_id).document(self.store_id)
         self._firestore_doc = None
 
         self.firestore_products_ref = self.firestore_doc_ref.collection('products')
@@ -21,6 +22,8 @@ class ShopifyIntegration:
 
         self.graphql_endpoint = 'https://' + self.myshopify_domain + '/admin/api/2024-07/graphql.json'
         self._access_token = None
+
+        self._feed = None
 
     @property
     def firestore_doc(self):
@@ -85,18 +88,57 @@ class ShopifyIntegration:
             else:
                 self.firestore_products_ref.document(prod_id).set(product, merge=True)
 
-
-
-class DataFeed:
-    def __init__(self, configuration):
-        self.config = configuration
-        self._sources = None
-        self._items = None
-
     @property
-    def sources(self):
-        return "hello"
+    def feed(self):
+        if self._feed:
+            pass
+        else:
+            self._feed = self.build_feed()
+        return self._feed
 
+    def build_feed(self):
+        items = []
+
+        for product_id in self.products:
+            product = self.products[product_id]
+            variants = product.get('variants').get('nodes')
+
+            for variant in variants:
+                item = dict()
+
+                item['id'] = variant.get('sku')
+
+                if (product.get('seo').get('title')):
+                    item['title'] = product.get('seo').get('title')
+                else:
+                    item['title'] = product.get('title')
+
+                if product.get('seo').get('description'):
+                    item['description'] = product.get('seo').get('description')
+                else:
+                    item['description'] = product.get('description')
+
+                item['link'] = product.get('onlineStoreUrl') + '?variant=' + variant.get('id').replace(
+                    'gid://shopify/ProductVariant/', '')
+
+                if product.get('hasOnlyDefaultVariant'):
+                    item['image_link'] = product.get('featuredMedia').get('preview').get('image').get('url')
+                else:
+                    item['image_link'] = variant.get('image').get('url')
+
+                items.append(item)
+
+        return items
+
+# class DataFeed:
+#     def __init__(self, configuration):
+#         self.config = configuration
+#         self._sources = None
+#         self._items = None
+#
+#     @property
+#     def sources(self):
+#         return "hello"
 
 
 if __name__ == '__main__':
@@ -107,12 +149,16 @@ if __name__ == '__main__':
         for store in shopify_stores:
             print(store.id)
 
-    dev_store = ShopifyIntegration('quickstart-4d4c0722.myshopify.com')
+    dev_store = ShopifyIntegration('quickstart-4d4c0722')
+    fjellmark = ShopifyIntegration('fjellmark')
     # products = []
     # for doc in dev_store.firestore_products_ref.stream():
     #     products.append(doc.to_dict())
 
-    # print(dev_store.sync_products())
+    # dev_store.sync_products()
+    # fjellmark.sync_products()
+
+    print(fjellmark.feed)
 
     # print(dev_store.products.get('8765739794596').get('seo').get('description'))
 

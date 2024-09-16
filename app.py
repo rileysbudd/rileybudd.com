@@ -50,14 +50,16 @@ def icebreaker():
     return render_template('question.html', question=icebreaker)
 
 
-@app.route('/shopify_integrations/<myshopify_url>/products')
-def get_products(myshopify_url):
-    store = ShopifyIntegration(myshopify_url)
-    products = []
-    for doc in store.firestore_products_ref.stream():
-        products.append(doc.to_dict())
-    return 'hello world'
-
+@app.route('/shopify/<store_id>/google_shopping_feed.xml')
+def get_products(store_id):
+    store = ShopifyIntegration(store_id)
+    store_data = {
+        "name": "My Store Name",
+        "url": "https://mystorename.com"
+    }
+    # Render XML with Jinja2 template
+    return render_template('google_shopping_feed.xml.j2', items=store.feed, store=store_data), {'Content-Type': 'application/xml'}
+    # return store.feed
 
 @app.route('/google_shopping_feed.xml')
 def product_feed():

@@ -11,8 +11,8 @@
 
                 <!-- Basic product data. Schema: https://support.google.com/merchants/answer/7052112?hl=en#basic_product_data -->
 
-                {% if item.sku %}
-                    <g:id>{{ item.sku }}</g:id>
+                {% if item.id %}
+                    <g:id>{{ item.id }}</g:id>
                 {% endif %}
 
                 {% if item.structured_title %}
@@ -289,26 +289,26 @@
                     <g:product_weight>{{ item.weight }}</g:product_weight>
                 {% endif %}
 
-                {% if item.additional_product_detail %}
+                {% if item.product_detail %}
                     <g:product_detail>
 
-                        {% if item.additional_product_detail.section_name %}
-                            <g:section_name>{{ item.additional_product_detail.section_name }}</g:section_name>
+                        {% if item.product_detail.section_name %}
+                            <g:section_name>{{ item.product_detail.section_name }}</g:section_name>
                         {% endif %}
 
                         {% if item.additional_product_detail.attribute_name %}
-                            <g:attribute_name>{{ item.additional_product_detail.attribute_name }}</g:attribute_name>
+                            <g:attribute_name>{{ item.product_detail.attribute_name }}</g:attribute_name>
                         {% endif %}
 
                         {% if item.additional_product_detail.attribute_value %}
-                            <g:attribute_value>{{ item.additional_product_detail.attribute_value }}</g:attribute_value>
+                            <g:attribute_value>{{ item.product_detail.attribute_value }}</g:attribute_value>
                         {% endif %}
 
                     </g:product_detail>
                 {% endif %}
 
-                {% if item.highlights %}
-                    {% for highlight in item.highlights %}
+                {% if item.product_highlights %}
+                    {% for highlight in item.product_highlights %}
                         <g:product_highlight>{{ highlight }}</g:product_highlight>
                     {% endfor %}
                 {% endif %}

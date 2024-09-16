@@ -92,6 +92,11 @@ shopify_gql = SimpleNamespace(**{
                     featuredMedia {
                         id
                         mediaContentType
+                        preview{
+                            image{
+                                url
+                            }
+                        }
                     }
     
     
