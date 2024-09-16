@@ -4,6 +4,8 @@ COPY requirements.txt .
 COPY app.py .
 COPY config.py .
 COPY funcs.py .
+COPY classes.py .
+COPY queries.py .
 COPY templates ./templates
 COPY static ./static
 
