@@ -61,6 +61,7 @@ def get_products(store_id):
     return render_template('google_shopping_feed.xml.j2', items=store.feed, store=store_data), {'Content-Type': 'application/xml'}
     # return store.feed
 
+
 @app.route('/google_shopping_feed.xml')
 def product_feed():
     store = {
@@ -109,6 +110,17 @@ def product_feed():
 
     # Render XML with Jinja2 template
     return render_template('google_shopping_feed.xml.j2', items=products, store=store), {'Content-Type': 'application/xml'}
+
+
+@app.route('/invoice')
+def invoice():
+    return render_template('invoice.html.j2')
+
+@app.route('/invoice2')
+def invoice2():
+    return render_template('invoice2.html.j2')
+# Dope site for templates:https://html5up.net/
+# Invoice template https://codepen.io/pvanfas/pen/vYEmGmK
 
 
 if __name__ == "__main__":

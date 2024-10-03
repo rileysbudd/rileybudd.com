@@ -1,84 +1,20 @@
 from types import SimpleNamespace
 
 shopify_gql = SimpleNamespace(**{
-    'variants_100':
+    'store_info':
     """
         query {
-            productVariants(first: 100) {
-                nodes {
-                    id
-                    sku
-                    title
-                    image {
-                        url
-                    }
-                    price
-                    compareAtPrice
-                    product{
-                        id
-                    }
-                    availableForSale
+            shop{
+                primaryDomain {
+                    url
                 }
-                pageInfo {
-                    hasPreviousPage
-                    hasNextPage
-                    startCursor
-                    endCursor
-                }
+                currencyCode
+                email
             }
         }
     """,
 
     # https://shopify.dev/docs/api/admin-graphql/2024-07/objects/Product#fields
-    'products_100':
-    """
-        {
-            products(first: 100) {
-                nodes {
-                    id
-                    title
-                    description
-                    descriptionHtml
-                    onlineStoreUrl
-                    featuredMedia {
-                        id
-                        mediaContentType
-                    }
-                    
-                    
-                                        
-                    isGiftCard
-                    hasOnlyDefaultVariant
-                    options {
-                        name
-                    }
-                    status
-                    seo {
-                        title
-                        description
-                    }
-                    media(first: 20) {
-                        nodes {
-                            id
-                                mediaContentType
-                            }
-                        }
-                    variants(first: 100) {
-                        nodes {
-                            id
-                        }
-                    }
-                }
-                pageInfo {
-                    hasPreviousPage
-                    hasNextPage
-                    startCursor
-                    endCursor
-                }
-            }
-        }
-    """,
-
     'products_variants_100x100':
     """
         {
@@ -98,11 +34,10 @@ shopify_gql = SimpleNamespace(**{
                             }
                         }
                     }
-    
-    
-    
+                    vendor
                     isGiftCard
                     hasOnlyDefaultVariant
+                    productType
                     options {
                         name
                     }
@@ -115,6 +50,11 @@ shopify_gql = SimpleNamespace(**{
                         nodes {
                             id
                                 mediaContentType
+                                preview{
+                                    image{
+                                        url
+                                    }
+                                }
                             }
                         }
                     variants(first: 100) {
@@ -128,6 +68,16 @@ shopify_gql = SimpleNamespace(**{
                             price
                             compareAtPrice
                             availableForSale
+                            inventoryItem {
+                                unitCost{
+                                    amount
+                                    currencyCode
+                                }
+                            }
+                            selectedOptions{
+                                name
+                                value
+                            }
                         }
                         pageInfo {
                             hasPreviousPage
@@ -150,4 +100,4 @@ shopify_gql = SimpleNamespace(**{
 
 if __name__ == '__main__':
 
-    print(shopify_gql.products_100)
+    print(shopify_gql.product_variants_100x100)

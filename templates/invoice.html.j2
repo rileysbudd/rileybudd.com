@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+
+    <!--
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: left;
+        }
+        .invoice-container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+
+        }
+        .info-section {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+
+            margin-bottom: 20px;
+        }
+        table, th, td {
+
+            padding: 10px;
+            text-align: left;
+        }
+        tr:first-child {
+            border-top: none;
+        }
+        tr:last-child {
+            border-bottom: none;
+        }
+        .total-section {
+            text-align: right;
+        }
+    </style>
+    -->
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="invoice-container">
+
+
+        <div class="info-section">
+            <p>Budd Media LLC</p>
+            <p>(385) 250-8312 | rileysbudd@gmail.com</p>
+        </div>
+
+        <h1>Invoice</h1>
+
+        <div class="info-section">
+            <p><strong>Invoice Number:</strong> 348971-000001</p>
+            <p><strong>Date Issued:</strong> Oct 3, 2024</p>
+            <p><strong>Next Payment Due:</strong> Oct 3, 2024</p>
+        </div>
+
+        <div class="info-section">
+            <p><strong>Bill To:</strong> Digital Will Ads</p>
+            <p>finance@digitalwillads.com</p>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Service Info</th>
+                    <th>Qty</th>
+                    <th>Unit Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td><strong>Aug 23, 2024 - Contracted Hours</strong</td>
+                    <td>1 Hour</td>
+                    <td>$50</td>
+                    <td>$50</td>
+                </tr>
+                <tr class="description-row">
+                    <td colspan="5">Description: Familiarizing myself with Clickup and Account Structure with the largest DWa Google Ad Accounts.</td>
+                </tr>
+
+                <tr>
+                    <td>August 26, 2024 - Contracted Hours</td>
+                    <td>2 Hours</td>
+                    <td>$50</td>
+                    <td>$100</td>
+                </tr>
+                <tr>
+                    <td>August 27, 2024 - Contracted Hours</td>
+                    <td>0.5 Hours</td>
+                    <td>$50</td>
+                    <td>$25</td>
+                </tr>
+                <!-- Continue for each line item -->
+                <tr>
+                    <td>September 13, 2024 - Contracted Hours</td>
+                    <td>5 Hours</td>
+                    <td>$50</td>
+                    <td>$250</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="total-section">
+            <p><strong>Subtotal:</strong> $1,650</p>
+
+            <p><strong>Total (USD):</strong> $1,650</p>
+        </div>
+
+        <div class="info-section">
+            <p><strong>Payment Schedule:</strong></p>
+            <p>Amount Due: $1,650</p>
+            <p><strong>Status:</strong> Overdue</p>
+        </div>
+    </div>
+</body>
+</html>
