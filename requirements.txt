@@ -4,3 +4,4 @@ openai
 firebase_admin
 requests
 qrcode
+pillow
