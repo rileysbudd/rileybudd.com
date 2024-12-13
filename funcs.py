@@ -2,10 +2,10 @@ from config import config
 import random
 import os
 
-# import qrcode
-# from qrcode.image.styledpil import StyledPilImage
-# from qrcode.image.styles.moduledrawers import RoundedModuleDrawer
-# from  qrcode.image.styles.colormasks import SolidFillColorMask
+import qrcode
+from qrcode.image.styledpil import StyledPilImage
+from qrcode.image.styles.moduledrawers import RoundedModuleDrawer
+from  qrcode.image.styles.colormasks import SolidFillColorMask
 # import PIL.ImageOps
 
 # alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789'
@@ -34,6 +34,28 @@ openai_model = "gpt-3.5-turbo"
 #
 #         # img = PIL.ImageOps.invert(img)
 #         img.save("./scratchdir/{}.png".format(shortcode))
+
+
+def generate_code(filename, url, color_tuple):
+
+    qr = qrcode.QRCode(
+        version=1,
+        box_size=50,
+    )
+
+    qr.add_data(url)
+
+    img = qr.make_image(
+        # box_size=40,
+        image_factory=StyledPilImage,
+        module_drawer=RoundedModuleDrawer(),
+        eye_drawer=RoundedModuleDrawer(),
+        color_mask=SolidFillColorMask(back_color=(255, 255, 255, 0), front_color=color_tuple),
+    )
+
+    # img = PIL.ImageOps.invert(img)
+    img.save("./scratchdir/{}.png".format(filename))
+
 
 def generate_dumbquote():
 
@@ -116,3 +138,6 @@ def random_images(images_dir = 'examples', quantity = 1, ):
     return random_set
 
 # print(random_images('examples', quantity=2))
+
+if __name__ == '__main__':
+    generate_code('code','https://calendly.com/rileysbudd/30min',(130,7,58,255))

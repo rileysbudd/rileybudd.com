@@ -118,10 +118,78 @@ def invoice():
 
 @app.route('/invoice2')
 def invoice2():
-    return render_template('invoice2.html.j2')
+    invoice_number = '348971-000002'
+
+    dates = {
+        'created': 'October 3, 2024',
+        'due': 'October 4, 2024'
+    }
+
+    client = {
+        'company': 'Digital Will Ads',
+        'contact': {
+            'name': 'Stacey Fielding',
+            'email': 'finance@digitalwillads.com'
+        }
+    }
+
+    items = [
+        {
+            'date': 'September 16, 2024',
+            'quantity': 1.5,
+            'rate': 50,
+            'description': 'Google Ad campaign buildouts for Perspire TV'
+        },{
+            'date': 'September 17, 2024',
+            'quantity': 2,
+            'rate': 50,
+            'description': 'Negative keyword filtering for Perspite TV. Analyzing Google and Hubspot accounts for Atlantic Training'
+        },{
+            'date': 'September 18, 2024',
+            'quantity': 2,
+            'rate': 50,
+            'description': 'Client communications with Atlantic Training. Ad account check-in for Perspire TV and weekly update. Some housekeeping items.'
+        },{
+            'date': 'September 19, 2024',
+            'quantity': 4.25,
+            'rate': 50,
+            'description': 'Account anlysis for DefinIT, creating new ads. Keyword analysis and campaign buildout for Atlantic Training.'
+        },{
+            'date': 'September 20, 2024',
+            'quantity': 4.25,
+            'rate': 50,
+            'description': 'Atlantic Training Google Ad campaign buildouts.'
+        },{
+            'date': 'September 23, 2024',
+            'quantity': 1,
+            'rate': 50,
+            'description': 'Clickup check-in, housekeeping, communication.'
+        },{
+            'date': 'September 24, 2024',
+            'quantity': 0.5,
+            'rate': 50,
+            'description': 'Atlantic training Google Ad campaign buildouts.'
+        },{
+            'date': 'September 25, 2024',
+            'quantity': 1.5,
+            'rate': 50,
+            'description': 'Atlantic Training client communication, checking in on the ad account, confirming strategic direction with client. Troubleshooting with the Zapier integration for Google Ad tracking.'
+        },{
+            'date': 'September 26, 2024',
+            'quantity': 0.5,
+            'rate': 50,
+            'description': 'Updating Perspire TV and Atlantic Training.'
+        }
+    ]
+
+    return render_template('invoice2.html.j2', items = items, dates=dates, invoice_number=invoice_number, client=client)
 # Dope site for templates:https://html5up.net/
 # Invoice template https://codepen.io/pvanfas/pen/vYEmGmK
 
+
+@app.route('/connect')
+def connect():
+    return render_template('calendly.html')
 
 if __name__ == "__main__":
     app.run()

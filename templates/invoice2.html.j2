@@ -7,10 +7,9 @@
 		<style>
 
 		    @media print {
-		        head, meta, title {
-		            visibility: hidden;
-                }                .invoice_box {
-                    dsiplay: ;
+                .invoice-box {
+                    box-shadow: none !important;
+                    border: none !important;
                 }
 
 		    }
@@ -38,7 +37,15 @@
 				vertical-align: top;
 			}
 
+			.invoice-box table tr td:nth-child(1) {
+				width: 60%;
+			}
+
 			.invoice-box table tr td:nth-child(2) {
+				text-align: right;
+			}
+
+			.invoice-box table tr td:nth-child(3) {
 				text-align: right;
 			}
 
@@ -66,18 +73,19 @@
 				padding-bottom: 20px;
 			}
 
-			.invoice-box table tr.item td {
+			.invoice-box table tr.item_description td {
 				border-bottom: 1px solid #eee;
 			}
 
-			.invoice-box table tr.item.last td {
+			.invoice-box table tr.item_description.last td {
 				border-bottom: none;
 			}
 
-			.invoice-box table tr.total td:nth-child(2) {
+			.invoice-box table tr.total td {
 				border-top: 2px solid #eee;
 				font-weight: bold;
 			}
+
 
 			@media only screen and (max-width: 600px) {
 				.invoice-box table tr.top table td {
@@ -113,7 +121,7 @@
 		<div class="invoice-box">
 			<table cellpadding="0" cellspacing="0">
 				<tr class="top">
-					<td colspan="2">
+					<td colspan="3">
 						<table>
 							<tr>
 								<td class="title">
@@ -123,10 +131,12 @@
 									/>
 								</td>
 
+
+
 								<td>
-									Invoice #: 123<br />
-									Created: January 1, 2023<br />
-									Due: February 1, 2023
+									Invoice #: {{invoice_number}}<br/>
+									Created: {{dates.created}}<br/>
+									Due: {{dates.due}}
 								</td>
 							</tr>
 						</table>
@@ -134,19 +144,20 @@
 				</tr>
 
 				<tr class="information">
-					<td colspan="2">
+					<td colspan="3">
 						<table>
 							<tr>
 								<td>
-									Budd Media, LLC.<br />
-									461 E. 2780 N.<br />
-									Provo, UT 84604
+									Budd Media, LLC<br/>
+									rileysbudd@gmail.com<br/>
+									(385) 250-8312
 								</td>
 
+
 								<td>
-									Acme Corp.<br />
-									John Doe<br />
-									john@example.com
+									{{client.company}}<br/>
+									{{client.contact.name}}<br />
+									{{client.contact.email  }}
 								</td>
 							</tr>
 						</table>
@@ -168,33 +179,37 @@
 				-->
 
 				<tr class="heading">
-					<td>Item</td>
-
-					<td>Price</td>
+					<td>Hourly Contract Work ($50/Hour)</td>
+                    <td>Quantity</td>
+					<td>Total</td>
 				</tr>
 
-				<tr class="item">
-					<td>Website design</td>
+                {% set ns = namespace(total=0) %}
 
-					<td>$300.00</td>
+                {% for item in items %}
+                {% set ns.total = ns.total + (item.quantity * item.rate) %}
+                <tr class="item">
+					<td><strong>{{item.date}}</strong></td>
+                    <td>{{item.quantity}}</td>
+					<td>${{ "{:.2f}".format(item.quantity * item.rate) }}</td>
 				</tr>
 
-				<tr class="item">
-					<td>Hosting (3 months)</td>
-
-					<td>$75.00</td>
-				</tr>
-
-				<tr class="item last">
-					<td>Domain name (1 year)</td>
-
-					<td>$10.00</td>
-				</tr>
+				{% if loop.last %}
+                <tr class="item_description last">
+                {% else %}
+                <tr class="item_description">
+                {% endif %}
+                    <td>{{item.description}}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
 
 				<tr class="total">
 					<td></td>
+					<td>Total: {{ items | sum(attribute='quantity') }}</td>
 
-					<td>Total: $385.00</td>
+					<td>Total: ${{ "{:.2f}".format(ns.total) }}</td>
 				</tr>
 			</table>
 		</div>
