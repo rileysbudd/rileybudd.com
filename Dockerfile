@@ -1,16 +1,13 @@
-FROM python:3.10
+FROM nginx:latest
 
-COPY requirements.txt .
-COPY app.py .
-COPY config.py .
-COPY funcs.py .
-COPY classes.py .
-COPY queries.py .
-COPY templates ./templates
-COPY static ./static
+# Copy custom configuration file to the container (optional)
+# COPY nginx.conf ./etc/nginx/nginx.conf
 
-RUN pip3 install --no-cache-dir -r requirements.txt
+# Copy website content to the default NGINX root directory
+COPY html ./usr/share/nginx/html
 
-EXPOSE 5000
+# Expose port 80 for HTTP
+EXPOSE 80
 
-CMD ["gunicorn", "app:app", "-b", "0.0.0.0:5000"]
+# Command to start NGINX (default in the base image)
+CMD ["nginx", "-g", "daemon off;"]

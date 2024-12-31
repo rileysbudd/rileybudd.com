@@ -4,3 +4,13 @@
 scratchpad.py
 /scratchdir/
 firebase_credentials.json
+
+app.py
+classes.py
+config.py
+funcs.py
+queries.py
+requirements.txt
+/templates/
+/static/
+Old_Dockerfile

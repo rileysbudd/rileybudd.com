@@ -2,6 +2,7 @@ from config import config
 import random
 import os
 
+
 import qrcode
 from qrcode.image.styledpil import StyledPilImage
 from qrcode.image.styles.moduledrawers import RoundedModuleDrawer
@@ -140,4 +141,4 @@ def random_images(images_dir = 'examples', quantity = 1, ):
 # print(random_images('examples', quantity=2))
 
 if __name__ == '__main__':
-    generate_code('code','https://calendly.com/rileysbudd/30min',(130,7,58,255))
+    generate_code('code','https://calendly.com/rileysbudd/30min',(201,226,254,255))
