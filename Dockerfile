@@ -1,6 +1,6 @@
 FROM nginx:latest
 
-# Copy custom configuration file to the container (optional)
+# Copy custom configuration file to the container
 # COPY nginx.conf ./etc/nginx/nginx.conf
 
 # Copy website content to the default NGINX root directory
