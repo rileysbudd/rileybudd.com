@@ -4,7 +4,7 @@ FROM nginx:latest
 # COPY nginx.conf ./etc/nginx/nginx.conf
 
 # Copy website content to the default NGINX root directory
-COPY html ./usr/share/nginx/html
+COPY ./html ./usr/share/nginx/html
 
 # Expose port 80 for HTTP
 EXPOSE 80
