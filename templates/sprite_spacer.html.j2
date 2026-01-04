@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Sprite Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+        label {
+            display: inline-block;
+            width: 120px;
+            margin: 5px 0;
+        }
+        input[type="number"] {
+            width: 80px;
+            padding: 5px;
+        }
+        input[type="text"] {
+            width: 300px;
+            padding: 5px;
+        }
+        button {
+            padding: 8px 16px;
+            margin: 10px 5px;
+            cursor: pointer;
+        }
+        canvas {
+            border: 2px solid #333;
+            display: block;
+            margin: 20px 0;
+        }
+        .info {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Sprite Viewer</h1>
+
+    <div class="controls">
+        <div>
+            <label>Image URL:</label>
+            <input type="text" id="imageUrl" placeholder="Enter image URL" value="{{ base_url }}/static/images/phonemes.jpg">
+        </div>
+        <div>
+            <label>Sprite Width:</label>
+            <input type="number" id="spriteWidth" value="64" min="1">
+        </div>
+        <div>
+            <label>Sprite Height:</label>
+            <input type="number" id="spriteHeight" value="64" min="1">
+        </div>
+        <div>
+            <label>Number of Columns:</label>
+            <input type="number" id="numCols" value="10" min="1">
+        </div>
+        <div>
+            <label>Number of Rows:</label>
+            <input type="number" id="numRows" value="7" min="1">
+        </div>
+        <div>
+            <label>Margin Top:</label>
+            <input type="number" id="marginTop" value="0" min="0">
+        </div>
+        <div>
+            <label>Margin Left:</label>
+            <input type="number" id="marginLeft" value="0" min="0">
+        </div>
+        <div>
+            <label>
+                <input type="checkbox" id="unevenSpacing" onchange="toggleUnevenSpacing()">
+                Uneven spacing
+            </label>
+        </div>
+        <div id="evenSpacingControls">
+            <div>
+                <label>Spacing Horizontal:</label>
+                <input type="number" id="spacingH" value="0" min="0">
+            </div>
+            <div>
+                <label>Spacing Vertical:</label>
+                <input type="number" id="spacingV" value="0" min="0">
+            </div>
+        </div>
+        <div id="unevenSpacingControls" style="display: none;">
+            <h3>Column Spacing (after each column)</h3>
+            <div id="columnSpacingInputs"></div>
+            <h3>Row Spacing (after each row)</h3>
+            <div id="rowSpacingInputs"></div>
+        </div>
+        <div>
+            <label>Column Index:</label>
+            <input type="number" id="colIndex" value="0" min="0">
+        </div>
+        <div>
+            <label>Row Index:</label>
+            <input type="number" id="rowIndex" value="0" min="0">
+        </div>
+        <button onclick="loadAndDisplay()">Load & Display</button>
+        <button onclick="prevSprite()">← Previous Sprite</button>
+        <button onclick="nextSprite()">Next Sprite →</button>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <div class="info" id="info"></div>
+
+    <script>
+        let img = null;
+        let cols = 0;
+        let rows = 0;
+        let columnSpacings = [];
+        let rowSpacings = [];
+
+        function toggleUnevenSpacing() {
+            const isUneven = document.getElementById('unevenSpacing').checked;
+            document.getElementById('evenSpacingControls').style.display = isUneven ? 'none' : 'block';
+            document.getElementById('unevenSpacingControls').style.display = isUneven ? 'block' : 'none';
+
+            if (isUneven) {
+                generateSpacingInputs();
+            }
+        }
+
+        function generateSpacingInputs() {
+            const numCols = parseInt(document.getElementById('numCols').value);
+            const numRows = parseInt(document.getElementById('numRows').value);
+
+            // Generate column spacing inputs
+            const colContainer = document.getElementById('columnSpacingInputs');
+            colContainer.innerHTML = '';
+            for (let i = 0; i < numCols - 1; i++) {
+                const div = document.createElement('div');
+                div.innerHTML = `<label>After column ${i}:</label><input type="number" id="colSpace${i}" value="0" min="0" style="width: 80px;">`;
+                colContainer.appendChild(div);
+            }
+
+            // Generate row spacing inputs
+            const rowContainer = document.getElementById('rowSpacingInputs');
+            rowContainer.innerHTML = '';
+            for (let i = 0; i < numRows - 1; i++) {
+                const div = document.createElement('div');
+                div.innerHTML = `<label>After row ${i}:</label><input type="number" id="rowSpace${i}" value="0" min="0" style="width: 80px;">`;
+                rowContainer.appendChild(div);
+            }
+        }
+
+        function loadAndDisplay() {
+            const url = document.getElementById('imageUrl').value;
+            const numCols = parseInt(document.getElementById('numCols').value);
+            const numRows = parseInt(document.getElementById('numRows').value);
+
+            cols = numCols;
+            rows = numRows;
+
+            img = new Image();
+            img.crossOrigin = "anonymous";
+
+            img.onload = function() {
+                document.getElementById('info').innerHTML =
+                    `Image loaded: ${img.width}x${img.height}px<br>` +
+                    `Grid: ${cols} columns × ${rows} rows<br>` +
+                    `Total sprites: ${cols * rows}`;
+
+                displaySprite();
+            };
+
+            img.onerror = function() {
+                document.getElementById('info').innerHTML =
+                    '<span style="color: red;">Error loading image. Check URL and CORS policy.</span>';
+            };
+
+            img.src = url;
+        }
+
+        function displaySprite() {
+            if (!img) return;
+
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const spriteW = parseInt(document.getElementById('spriteWidth').value);
+            const spriteH = parseInt(document.getElementById('spriteHeight').value);
+            const marginTop = parseInt(document.getElementById('marginTop').value);
+            const marginLeft = parseInt(document.getElementById('marginLeft').value);
+            const col = parseInt(document.getElementById('colIndex').value);
+            const row = parseInt(document.getElementById('rowIndex').value);
+            const isUneven = document.getElementById('unevenSpacing').checked;
+
+            canvas.width = spriteW;
+            canvas.height = spriteH;
+
+            let sx, sy;
+
+            if (isUneven) {
+                // Calculate position with uneven spacing
+                sx = marginLeft;
+                for (let i = 0; i < col; i++) {
+                    sx += spriteW;
+                    const spacingInput = document.getElementById(`colSpace${i}`);
+                    if (spacingInput) {
+                        sx += parseInt(spacingInput.value);
+                    }
+                }
+
+                sy = marginTop;
+                for (let i = 0; i < row; i++) {
+                    sy += spriteH;
+                    const spacingInput = document.getElementById(`rowSpace${i}`);
+                    if (spacingInput) {
+                        sy += parseInt(spacingInput.value);
+                    }
+                }
+            } else {
+                // Calculate position with even spacing
+                const spacingH = parseInt(document.getElementById('spacingH').value);
+                const spacingV = parseInt(document.getElementById('spacingV').value);
+                sx = marginLeft + col * (spriteW + spacingH);
+                sy = marginTop + row * (spriteH + spacingV);
+            }
+
+            // Clear canvas and draw sprite
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, sx, sy, spriteW, spriteH, 0, 0, spriteW, spriteH);
+        }
+
+        function nextSprite() {
+            if (!img) return;
+
+            let col = parseInt(document.getElementById('colIndex').value);
+            let row = parseInt(document.getElementById('rowIndex').value);
+
+            col++;
+            if (col >= cols) {
+                col = 0;
+                row++;
+                if (row >= rows) {
+                    row = 0;
+                }
+            }
+
+            document.getElementById('colIndex').value = col;
+            document.getElementById('rowIndex').value = row;
+            displaySprite();
+        }
+
+        function prevSprite() {
+            if (!img) return;
+
+            let col = parseInt(document.getElementById('colIndex').value);
+            let row = parseInt(document.getElementById('rowIndex').value);
+
+            col--;
+            if (col < 0) {
+                col = cols - 1;
+                row--;
+                if (row < 0) {
+                    row = rows - 1;
+                }
+            }
+
+            document.getElementById('colIndex').value = col;
+            document.getElementById('rowIndex').value = row;
+            displaySprite();
+        }
+
+        // Update display when index values change
+        document.getElementById('colIndex').addEventListener('input', displaySprite);
+        document.getElementById('rowIndex').addEventListener('input', displaySprite);
+        document.getElementById('numCols').addEventListener('input', function() {
+            if (document.getElementById('unevenSpacing').checked) {
+                generateSpacingInputs();
+            }
+        });
+        document.getElementById('numRows').addEventListener('input', function() {
+            if (document.getElementById('unevenSpacing').checked) {
+                generateSpacingInputs();
+            }
+        });
+    </script>
+</body>
+</html>
