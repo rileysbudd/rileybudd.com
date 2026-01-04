@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, current_app
+from flask import Flask, request, render_template, current_app, jsonify
 from config import config
 import funcs
 from classes import ShopifyIntegration
@@ -6,13 +6,36 @@ from classes import ShopifyIntegration
 
 app = Flask(__name__)
 
+@app.route('/')
+def homepage():
+    base_url = request.url_root.rstrip('/')
+    return render_template('home.html.j2', base_url=base_url)
+
+@app.route('/sprite_spacer')
+def sprite_spacer():
+    base_url = request.url_root.rstrip('/')
+    return render_template('sprite_spacer.html.j2', base_url=base_url)
+
+@app.route('/chat', methods=['GET', 'POST'])
+def chat():
+    if request.method == 'GET':
+        return render_template('chat.html.j2')
+
+    # POST request
+    data = request.get_json()
+    user_message = data.get('message', '')
+
+    # Your chatbot logic here
+    response = f"You said: {user_message}"
+
+    return jsonify({'response': response})
+
 
 #This just serves content from the static folder, where filepath is starts from within /static/
 @app.route('/static/<filepath>')
 def send_static_file(filepath):
     return current_app.send_static_file(filepath)
     # return filepath
-
 
 @app.route('/firestore/connected')
 def verify_firestore_connection():

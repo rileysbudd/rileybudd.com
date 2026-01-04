@@ -141,4 +141,4 @@ def random_images(images_dir = 'examples', quantity = 1, ):
 # print(random_images('examples', quantity=2))
 
 if __name__ == '__main__':
-    generate_code('code','https://calendly.com/rileysbudd/30min',(201,226,254,255))
+    generate_code('code','https://calendly.com/rileysbudd/30min',(255,209,89,255))
