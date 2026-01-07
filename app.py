@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, current_app, jsonify
 # from config import config
-import funcs
-from classes import ShopifyIntegration
+# import funcs
+# from classes import ShopifyIntegration
 
 
 app = Flask(__name__)
