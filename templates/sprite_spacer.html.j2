@@ -108,6 +108,7 @@
         <button onclick="loadAndDisplay()">Load & Display</button>
         <button onclick="prevSprite()">← Previous Sprite</button>
         <button onclick="nextSprite()">Next Sprite →</button>
+        <button onclick="downloadSprite()">Download Current Sprite</button>
     </div>
 
     <canvas id="canvas"></canvas>
@@ -235,14 +236,16 @@
         function nextSprite() {
             if (!img) return;
 
+            const maxCols = parseInt(document.getElementById('numCols').value);
+            const maxRows = parseInt(document.getElementById('numRows').value);
             let col = parseInt(document.getElementById('colIndex').value);
             let row = parseInt(document.getElementById('rowIndex').value);
 
             col++;
-            if (col >= cols) {
+            if (col >= maxCols) {
                 col = 0;
                 row++;
-                if (row >= rows) {
+                if (row >= maxRows) {
                     row = 0;
                 }
             }
@@ -255,21 +258,35 @@
         function prevSprite() {
             if (!img) return;
 
+            const maxCols = parseInt(document.getElementById('numCols').value);
+            const maxRows = parseInt(document.getElementById('numRows').value);
             let col = parseInt(document.getElementById('colIndex').value);
             let row = parseInt(document.getElementById('rowIndex').value);
 
             col--;
             if (col < 0) {
-                col = cols - 1;
+                col = maxCols - 1;
                 row--;
                 if (row < 0) {
-                    row = rows - 1;
+                    row = maxRows - 1;
                 }
             }
 
             document.getElementById('colIndex').value = col;
             document.getElementById('rowIndex').value = row;
             displaySprite();
+        }
+
+        function downloadSprite() {
+            const canvas = document.getElementById('canvas');
+            const col = parseInt(document.getElementById('colIndex').value);
+            const row = parseInt(document.getElementById('rowIndex').value);
+
+            // Create download link
+            const link = document.createElement('a');
+            link.download = `sprite_row${row}_col${col}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
         }
 
         // Update display when index values change
