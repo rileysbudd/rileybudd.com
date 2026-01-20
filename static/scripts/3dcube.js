@@ -1,5 +1,16 @@
-// Three.js 3D Rotating Cube with Drop Shadow and Backlight
+// Three.js 3D Rotating GLB Model with Drop Shadow and Backlight
 
+// Import GLTFLoader from CDN
+import('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/loaders/GLTFLoader.js')
+  .then(module => {
+    const GLTFLoader = module.GLTFLoader;
+    initScene(GLTFLoader);
+  })
+  .catch(err => {
+    console.error('Failed to load GLTFLoader:', err);
+  });
+
+function initScene(GLTFLoader) {
 // Scene setup
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x1a1a2e);
@@ -20,17 +31,80 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
 
-// Create cube
-const geometry = new THREE.BoxGeometry(2, 2, 2);
-const material = new THREE.MeshStandardMaterial({
-  color: 0x4a90e2,
-  metalness: 0.5,
-  roughness: 0.3
-});
-const cube = new THREE.Mesh(geometry, material);
-cube.castShadow = true;
-cube.receiveShadow = true;
-scene.add(cube);
+// Variable to hold the loaded model
+let loadedModel = null;
+
+// Add a temporary cube to verify rendering works
+const tempGeometry = new THREE.BoxGeometry(1, 1, 1);
+const tempMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+const tempCube = new THREE.Mesh(tempGeometry, tempMaterial);
+tempCube.castShadow = true;
+scene.add(tempCube);
+console.log('Temporary red cube added - if you see this, rendering works!');
+
+// Load GLB model
+const loader = new GLTFLoader();
+const modelPath = 'static/models/orb.glb'; // Replace with your GLB file path
+
+console.log('Starting to load model from:', modelPath);
+
+loader.load(
+  modelPath,
+  (gltf) => {
+    console.log('Model loaded! Contents:', gltf);
+    loadedModel = gltf.scene;
+
+    // Remove temporary cube
+    scene.remove(tempCube);
+
+    // Enable shadows for all meshes in the model
+    loadedModel.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+        node.receiveShadow = true;
+        console.log('Found mesh:', node.name);
+      }
+    });
+
+    // Center and scale the model
+    const box = new THREE.Box3().setFromObject(loadedModel);
+    const center = box.getCenter(new THREE.Vector3());
+    const size = box.getSize(new THREE.Vector3());
+
+    console.log('Model size:', size);
+    console.log('Model center:', center);
+
+    // Center the model
+    loadedModel.position.sub(center);
+
+    // Scale model to fit in view (target size of ~2 units)
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const scale = 2 / maxDim;
+    loadedModel.scale.setScalar(scale);
+
+    console.log('Applied scale:', scale);
+
+    // Position camera based on model size
+    const distance = maxDim * 2;
+    camera.position.set(distance, distance * 0.5, distance);
+    camera.lookAt(0, 0, 0);
+
+    console.log('Camera position:', camera.position);
+
+    // Adjust ground plane position
+    plane.position.y = -size.y * scale / 2 - 0.5;
+
+    scene.add(loadedModel);
+
+    console.log('Model loaded successfully!');
+  },
+  (progress) => {
+    console.log('Loading: ' + (progress.loaded / progress.total * 100) + '%');
+  },
+  (error) => {
+    console.error('Error loading model:', error);
+  }
+);
 
 // Create ground plane for shadow
 const planeGeometry = new THREE.PlaneGeometry(10, 10);
@@ -69,9 +143,17 @@ scene.add(rimLight);
 function animate() {
   requestAnimationFrame(animate);
 
-  // Rotate cube
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
+  // Rotate temporary cube
+  if (tempCube && tempCube.parent) {
+    tempCube.rotation.x += 0.01;
+    tempCube.rotation.y += 0.01;
+  }
+
+  // Rotate model if loaded
+  if (loadedModel) {
+    loadedModel.rotation.x += 0.01;
+    loadedModel.rotation.y += 0.01;
+  }
 
   // Animate backlight intensity
   backLight.intensity = 2 + Math.sin(Date.now() * 0.001) * 0.5;
@@ -88,3 +170,4 @@ window.addEventListener('resize', () => {
 
 // Start animation
 animate();
+} // End of initScene function

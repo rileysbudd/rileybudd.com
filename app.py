@@ -16,6 +16,10 @@ def sprite_spacer():
     base_url = request.url_root.rstrip('/')
     return render_template('sprite_spacer.html.j2', base_url=base_url)
 
+@app.route('/video_call')
+def video_call():
+    base_url = request.url_root.rstrip('/')
+    return render_template('video_call.html.j2', base_url=base_url)
 @app.route('/chat', methods=['GET', 'POST'])
 def chat():
     if request.method == 'GET':
